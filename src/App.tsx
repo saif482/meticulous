@@ -58,8 +58,9 @@ function App() {
         </p>
       </div>
 
-      <div className="interactive-section">
+      <div className="interactive-section" style={{ backgroundColor: 'red' }}>
         <h2>Interactive Elements for Testing</h2>
+        <p>Interactive Elements for Testing hello check 12345</p>
         
         <div className="button-group">
           <button onClick={() => handleAlert('Hello from Meticulous!')}>
