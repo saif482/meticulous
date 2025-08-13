@@ -66,17 +66,17 @@ function App() {
             Show Alert
           </button>
           
-          <button onClick={() => handleConfirm('Do you want to continue?')}>
+          {/* <button onClick={() => handleConfirm('Do you want to continue?')}>
             Show Confirm
-          </button>
+          </button> */}
           
           <button onClick={handlePrompt}>
             Show Prompt
           </button>
           
-          {/* <button onClick={() => setShowForm(!showForm)}>
+          <button onClick={() => setShowForm(!showForm)}>
             {showForm ? 'Hide Form' : 'Show Form'}
-          </button> */}
+          </button>
         </div>
 
         {showForm && (
