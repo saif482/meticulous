@@ -74,9 +74,9 @@ function App() {
             Show Prompt
           </button>
           
-          <button onClick={() => setShowForm(!showForm)}>
+          {/* <button onClick={() => setShowForm(!showForm)}>
             {showForm ? 'Hide Form' : 'Show Form'}
-          </button>
+          </button> */}
         </div>
 
         {showForm && (
