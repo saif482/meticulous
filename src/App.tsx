@@ -13,14 +13,14 @@ function App() {
     alert(message)
   }
 
-  const handleConfirm = (message: string) => {
-    const confirmed = confirm(message)
-    if (confirmed) {
-      alert('You confirmed!')
-    } else {
-      alert('You cancelled!')
-    }
-  }
+  // const handleConfirm = (message: string) => {
+  //   const confirmed = confirm(message)
+  //   if (confirmed) {
+  //     alert('You confirmed!')
+  //   } else {
+  //     alert('You cancelled!')
+  //   }
+  // }
 
   const handlePrompt = () => {
     const userInput = prompt('Enter your favorite color:')
