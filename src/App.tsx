@@ -6,7 +6,7 @@ const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
   password: z.string()
     .min(8, 'Password must be at least 8 characters long')
-    .regex(/^[a-zA-Z0-9]+$/, 'Password must contain only alphanumeric characters')
+    .regex(/^[0-9]+$/, 'Password must contain only numeric characters')
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -78,7 +78,7 @@ function App() {
             />
             {errors.password && <span className="error-message">{errors.password}</span>}
             <small className="password-hint">
-              Password must be at least 8 characters and contain only letters and numbers
+              Password must be at least 8 characters and contain only numbers
             </small>
           </div>
           
