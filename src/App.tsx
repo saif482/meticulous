@@ -1,118 +1,93 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { z } from 'zod'
 import './App.css'
 
+const loginSchema = z.object({
+  username: z.string().min(1, 'Username is required'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters long')
+    .regex(/^[a-zA-Z0-9]+$/, 'Password must contain only alphanumeric characters')
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
+
 function App() {
-  const [count, setCount] = useState(0)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [showForm, setShowForm] = useState(false)
+  const [formData, setFormData] = useState<LoginFormData>({
+    username: '',
+    password: ''
+  })
+  const [errors, setErrors] = useState<Partial<LoginFormData>>({})
 
-  const handleAlert = (message: string) => {
-    alert(message)
-  }
-
-  // const handleConfirm = (message: string) => {
-  //   const confirmed = confirm(message)
-  //   if (confirmed) {
-  //     alert('You confirmed!')
-  //   } else {
-  //     alert('You cancelled!')
-  //   }
-  // }
-
-  const handlePrompt = () => {
-    const userInput = prompt('Enter your favorite color:')
-    if (userInput) {
-      alert(`Your favorite color is: ${userInput}`)
+  const handleInputChange = (field: keyof LoginFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }))
     }
   }
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert(`Form submitted! Name: ${name}, Email: ${email}`)
-    setName('')
-    setEmail('')
-    setShowForm(false)
+    
+    setErrors({})
+    
+    const result = loginSchema.safeParse(formData)
+    
+    if (!result.success) {
+      const fieldErrors: Partial<LoginFormData> = {}
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof LoginFormData
+        if (field && typeof field === 'string') {
+          fieldErrors[field] = issue.message
+        }
+      })
+      setErrors(fieldErrors)
+      return
+    }
+    
+    alert(`Login successful! Username: ${result.data.username}`)
+    setFormData({ username: '', password: '' })
   }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Meticulous</h1>
-      
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-
-      <div className="interactive-section" style={{ backgroundColor: 'green' }}>
-        <h2>Interactive Elements for Testing</h2>
-        
-        <div className="button-group">
-          <button onClick={() => handleAlert('Hello from Meticulous!')}>
-            Show Alert
-          </button>
+    <div className="login-container">
+      <div className="login-form">
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+              id="username"
+              type="text"
+              value={formData.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              placeholder="Enter username"
+              className={errors.username ? 'error' : ''}
+            />
+            {errors.username && <span className="error-message">{errors.username}</span>}
+          </div>
           
-          {/* <button onClick={() => handleConfirm('Do you want to continue?')}>
-            Show Confirm
-          </button> */}
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              placeholder="Enter password"
+              className={errors.password ? 'error' : ''}
+            />
+            {errors.password && <span className="error-message">{errors.password}</span>}
+            <small className="password-hint">
+              Password must be at least 8 characters and contain only letters and numbers
+            </small>
+          </div>
           
-          <button onClick={handlePrompt}>
-            Show Prompt
+          <button type="submit" className="login-button">
+            Login here
           </button>
-          
-          <button onClick={() => setShowForm(!showForm)}>
-            {showForm ? 'Hide Form' : 'Show Form'}
-          </button>
-        </div>
-
-        {showForm && (
-          <form onSubmit={handleFormSubmit} className="test-form">
-            <h3>Test Form</h3>
-            <div>
-              <label htmlFor="name">Name:</label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="email">Email:</label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-              />
-            </div>
-            <button type="submit">Submit Form</button>
-          </form>
-        )}
+        </form>
       </div>
-
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
