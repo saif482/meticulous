@@ -13,14 +13,14 @@ function App() {
     alert(message)
   }
 
-  const handleConfirm = (message: string) => {
-    const confirmed = confirm(message)
-    if (confirmed) {
-      alert('You confirmed!')
-    } else {
-      alert('You cancelled!')
-    }
-  }
+  // const handleConfirm = (message: string) => {
+  //   const confirmed = confirm(message)
+  //   if (confirmed) {
+  //     alert('You confirmed!')
+  //   } else {
+  //     alert('You cancelled!')
+  //   }
+  // }
 
   const handlePrompt = () => {
     const userInput = prompt('Enter your favorite color:')
@@ -58,7 +58,7 @@ function App() {
         </p>
       </div>
 
-      <div className="interactive-section">
+      <div className="interactive-section" style={{ backgroundColor: 'green' }}>
         <h2>Interactive Elements for Testing</h2>
         
         <div className="button-group">
@@ -66,9 +66,9 @@ function App() {
             Show Alert
           </button>
           
-          <button onClick={() => handleConfirm('Do you want to continue?')}>
+          {/* <button onClick={() => handleConfirm('Do you want to continue?')}>
             Show Confirm
-          </button>
+          </button> */}
           
           <button onClick={handlePrompt}>
             Show Prompt
