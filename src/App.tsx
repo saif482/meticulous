@@ -53,7 +53,7 @@ function App() {
       <div className="login-form">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label htmlFor="username">Username:</label>
             <input
               id="username"
@@ -66,7 +66,7 @@ function App() {
             {errors.username && <span className="error-message">{errors.username}</span>}
           </div>
           
-          <div className="form-group">
+          <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label htmlFor="password">Password:</label>
             <input
               id="password"
